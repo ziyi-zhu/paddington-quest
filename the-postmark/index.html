@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 1: The Postmark</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5c4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #2c1810;
+        }
+        
+        .container {
+            max-width: 900px;
+            background: #fdfbf7;
+            border: 3px solid #8b4513;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 50px;
+            position: relative;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: #e8d5c4;
+            border-radius: 15px 15px 0 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                #d4322c 0px,
+                #d4322c 10px,
+                #fdfbf7 10px,
+                #fdfbf7 20px
+            );
+            width: 12.5%;
+            transition: width 0.5s ease;
+        }
+        
+        .level-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .level-number {
+            font-size: 1.2em;
+            color: #d4322c;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            color: #1a4d7c;
+            margin: 10px 0;
+        }
+        
+        .puzzle-box {
+            background: #fff9e6;
+            border: 3px solid #8b4513;
+            border-radius: 10px;
+            padding: 40px;
+            margin: 30px 0;
+            font-size: 1.15em;
+            line-height: 1.8;
+            position: relative;
+        }
+        
+        .puzzle-box::before {
+            content: '📮';
+            position: absolute;
+            top: -25px;
+            left: 30px;
+            font-size: 50px;
+        }
+        
+        .telegram-header {
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px dashed #8b4513;
+        }
+        
+        .telegram-text {
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            letter-spacing: 1px;
+        }
+        
+        .paddington-note {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #1a4d7c;
+            font-style: italic;
+        }
+        
+        .smudged-address {
+            text-align: center;
+            font-size: 2em;
+            margin: 30px 0;
+            color: #888;
+            text-shadow: 0 0 5px rgba(0,0,0,0.3);
+            letter-spacing: 3px;
+        }
+        
+        .answer-section {
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .question {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1a4d7c;
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"] {
+            width: 300px;
+            padding: 15px 20px;
+            font-size: 1.3em;
+            font-family: 'Crimson Text', serif;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            text-align: center;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1a4d7c;
+            box-shadow: 0 0 10px rgba(26, 77, 124, 0.3);
+        }
+        
+        button {
+            margin: 20px 10px;
+            padding: 15px 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #fdfbf7;
+            background: #1a4d7c;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #d4322c;
+            transform: translateY(-2px);
+        }
+        
+        .feedback {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            text-align: center;
+            display: none;
+        }
+        
+        .feedback.error {
+            background: #ffe6e6;
+            border: 2px solid #d4322c;
+            color: #8b0000;
+            display: block;
+        }
+        
+        .feedback.success {
+            background: #e6ffe6;
+            border: 2px solid #2d7d2d;
+            color: #0b4d0b;
+            display: block;
+        }
+        
+        .hint {
+            font-size: 1em;
+            color: #666;
+            font-style: italic;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        
+        <div class="level-header">
+            <p class="level-number">LEVEL 1 OF 8</p>
+            <h1>The Postmark</h1>
+        </div>
+        
+        <div class="puzzle-box">
+            <div class="telegram-header">
+                ⚡ TELEGRAM ⚡<br>
+                Arrived at dawn, damp with Thames mist
+            </div>
+            
+            <div class="telegram-text">
+                URGENT STOP RECIPE MISSING STOP<br>
+                AUNT LUCY SENDS REGARDS FROM DARKEST PERU STOP<br>
+                CLUES HIDDEN WHERE BEAR RESIDES STOP<br>
+                FIRST ANSWER LIES IN THE ADDRESS STOP
+            </div>
+            
+            <div class="paddington-note">
+                <p style="margin-bottom: 15px;">
+                    <strong>Paddington's worried paw-writing:</strong>
+                </p>
+                <p style="margin-bottom: 10px;">
+                    "Oh dear. The envelope came this morning but the address is smudged! 
+                    I can make out 'Windsor Gardens' but the number has run in the rain..."
+                </p>
+                <p style="margin: 15px 0;">
+                    He shows you a faded piece of paper with barely visible ink.
+                </p>
+                <div class="smudged-address">
+                    ?? Windsor Gardens
+                </div>
+                <p style="margin: 15px 0;">
+                    "I know I live there, but which number was it? 
+                    The postman would know. What's my house number?"
+                </p>
+                <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
+                    (Numbers only, please)
+                </p>
+            </div>
+        </div>
+        
+        <div class="answer-section">
+            <p class="question">What is Paddington's house number?</p>
+            <input type="text" id="answer" placeholder="Enter number..." autocomplete="off">
+            <br>
+            <button onclick="checkAnswer()">Submit Answer</button>
+            <div class="feedback" id="feedback"></div>
+            <p class="hint">Hint: Think of the famous Paddington Bear stories...</p>
+        </div>
+    </div>
+    
+    <script>
+        let attempts = 0;
+        
+        function checkAnswer() {
+            const input = document.getElementById('answer').value.trim();
+            const feedback = document.getElementById('feedback');
+            attempts++;
+            
+            if (input === '32') {
+                feedback.className = 'feedback success';
+                feedback.innerHTML = `
+                    <p style="font-size: 1.3em; margin-bottom: 10px;">🎉 Correct! 🎉</p>
+                    <p>"Oh, well done!" Paddington exclaims. "32 Windsor Gardens—that's exactly right!"</p>
+                    <p style="margin-top: 15px;">The first clue is solved. Onward to the next mystery...</p>
+                `;
+                
+                setTimeout(() => {
+                    window.location.href = '../the-reversed-letter/index.html';
+                }, 3000);
+            } else {
+                feedback.className = 'feedback error';
+                
+                if (attempts === 1) {
+                    feedback.innerHTML = `
+                        <p>❌ Not quite right...</p>
+                        <p>Paddington looks puzzled. "Are you sure? Try again, please."</p>
+                    `;
+                } else if (attempts === 2) {
+                    feedback.innerHTML = `
+                        <p>❌ Still not correct...</p>
+                        <p>"Perhaps you should think about the original Paddington Bear stories by Michael Bond. Where does he live with the Brown family?"</p>
+                    `;
+                } else {
+                    feedback.innerHTML = `
+                        <p>❌ Hmm, that's not it...</p>
+                        <p>Mrs. Bird whispers: "It's a two-digit number, dear. The first digit is smaller than the second!"</p>
+                    `;
+                }
+            }
+        }
+        
+        // Allow Enter key to submit
+        document.getElementById('answer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        
+        // Focus input on load
+        window.onload = function() {
+            document.getElementById('answer').focus();
+        };
+    </script>
+</body>
+</html>
+

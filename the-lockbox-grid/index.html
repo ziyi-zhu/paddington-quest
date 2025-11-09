@@ -1,0 +1,470 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 8: The Lockbox Grid</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5c4 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c1810;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #fdfbf7;
+            border: 3px solid #8b4513;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 50px;
+            position: relative;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: #e8d5c4;
+            border-radius: 15px 15px 0 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                #d4322c 0px,
+                #d4322c 10px,
+                #fdfbf7 10px,
+                #fdfbf7 20px
+            );
+            width: 100%;
+        }
+        
+        .level-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .level-number {
+            font-size: 1.2em;
+            color: #d4322c;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            color: #1a4d7c;
+            margin: 10px 0;
+        }
+        
+        .story-box {
+            background: #fff9e6;
+            border: 3px solid #8b4513;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px 0;
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+        
+        .cipher-container {
+            background: white;
+            border: 4px solid #8b4513;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+        }
+        
+        .cipher-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5em;
+            color: #d4322c;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .cipher-key {
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .cipher-grids {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+        
+        .grid-explanation {
+            text-align: center;
+            font-size: 0.95em;
+            color: #666;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        
+        svg {
+            border: 2px solid #8b4513;
+            border-radius: 5px;
+        }
+        
+        .encrypted-message {
+            background: #f0f8ff;
+            border: 4px solid #d4322c;
+            border-radius: 10px;
+            padding: 40px;
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .encrypted-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #1a4d7c;
+        }
+        
+        .answer-section {
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .question {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1a4d7c;
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"] {
+            width: 90%;
+            max-width: 600px;
+            padding: 15px 20px;
+            font-size: 1.2em;
+            font-family: 'Crimson Text', serif;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            text-align: center;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1a4d7c;
+            box-shadow: 0 0 10px rgba(26, 77, 124, 0.3);
+        }
+        
+        button {
+            margin: 20px 10px;
+            padding: 15px 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #fdfbf7;
+            background: #1a4d7c;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #d4322c;
+            transform: translateY(-2px);
+        }
+        
+        .feedback {
+            margin: 20px auto;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            text-align: center;
+            display: none;
+            max-width: 700px;
+        }
+        
+        .feedback.error {
+            background: #ffe6e6;
+            border: 2px solid #d4322c;
+            color: #8b0000;
+            display: block;
+        }
+        
+        .feedback.success {
+            background: #e6ffe6;
+            border: 2px solid #2d7d2d;
+            color: #0b4d0b;
+            display: block;
+        }
+        
+        .hint {
+            font-size: 1em;
+            color: #666;
+            font-style: italic;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        
+        <div class="level-header">
+            <p class="level-number">LEVEL 8 OF 8 — THE FINAL PUZZLE</p>
+            <h1>The Lockbox Grid</h1>
+        </div>
+        
+        <div class="story-box">
+            <p style="margin: 15px 0;">
+                The jar's bottom reveals a locked compartment! Inside, something precious awaits...
+            </p>
+            
+            <p style="margin: 15px 0;">
+                Mr. Gruber produces an ancient-looking key chart with trembling hands:
+            </p>
+            
+            <p style="margin: 15px 0; font-style: italic; font-size: 1.2em;">
+                "This is the 'Pigpen Cipher' — used by secret societies and clever bears alike. 
+                Each symbol represents a letter based on its position in these grids..."
+            </p>
+        </div>
+        
+        <div class="cipher-container">
+            <div class="cipher-title">🔐 The Pigpen Cipher Key 🔐</div>
+            
+            <div class="cipher-grids">
+                <!-- Tic-tac-toe grid -->
+                <div>
+                    <svg width="200" height="200" viewBox="0 0 200 200">
+                        <!-- Grid lines -->
+                        <line x1="0" y1="67" x2="200" y2="67" stroke="#8b4513" stroke-width="3"/>
+                        <line x1="0" y1="133" x2="200" y2="133" stroke="#8b4513" stroke-width="3"/>
+                        <line x1="67" y1="0" x2="67" y2="200" stroke="#8b4513" stroke-width="3"/>
+                        <line x1="133" y1="0" x2="133" y2="200" stroke="#8b4513" stroke-width="3"/>
+                        <!-- Letters -->
+                        <text x="33" y="45" text-anchor="middle" font-size="30" fill="#1a4d7c" font-weight="bold">A</text>
+                        <text x="100" y="45" text-anchor="middle" font-size="30" fill="#1a4d7c" font-weight="bold">B</text>
+                        <text x="167" y="45" text-anchor="middle" font-size="30" fill="#1a4d7c" font-weight="bold">C</text>
+                        <text x="33" y="110" text-anchor="middle" font-size="30" fill="#1a4d7c" font-weight="bold">D</text>
+                        <text x="100" y="110" text-anchor="middle" font-size="30" fill="#1a4d7c" font-weight="bold">E</text>
+                        <text x="167" y="110" text-anchor="middle" font-size="30" fill="#1a4d7c" font-weight="bold">F</text>
+                        <text x="33" y="175" text-anchor="middle" font-size="30" fill="#1a4d7c" font-weight="bold">G</text>
+                        <text x="100" y="175" text-anchor="middle" font-size="30" fill="#1a4d7c" font-weight="bold">H</text>
+                        <text x="167" y="175" text-anchor="middle" font-size="30" fill="#1a4d7c" font-weight="bold">I</text>
+                    </svg>
+                    <p style="text-align: center; margin-top: 10px; font-weight: 600;">Grid 1</p>
+                </div>
+                
+                <!-- X grid with dots -->
+                <div>
+                    <svg width="200" height="200" viewBox="0 0 200 200">
+                        <!-- X lines -->
+                        <line x1="0" y1="0" x2="200" y2="200" stroke="#8b4513" stroke-width="3"/>
+                        <line x1="200" y1="0" x2="0" y2="200" stroke="#8b4513" stroke-width="3"/>
+                        <line x1="100" y1="0" x2="100" y2="200" stroke="#8b4513" stroke-width="3"/>
+                        <line x1="0" y1="100" x2="200" y2="100" stroke="#8b4513" stroke-width="3"/>
+                        <!-- Letters with dots -->
+                        <text x="50" y="45" text-anchor="middle" font-size="26" fill="#1a4d7c" font-weight="bold">J•</text>
+                        <text x="150" y="45" text-anchor="middle" font-size="26" fill="#1a4d7c" font-weight="bold">K•</text>
+                        <text x="30" y="110" text-anchor="middle" font-size="26" fill="#1a4d7c" font-weight="bold">L•</text>
+                        <text x="170" y="110" text-anchor="middle" font-size="26" fill="#1a4d7c" font-weight="bold">M•</text>
+                        <text x="50" y="175" text-anchor="middle" font-size="26" fill="#1a4d7c" font-weight="bold">N•</text>
+                        <text x="150" y="175" text-anchor="middle" font-size="26" fill="#1a4d7c" font-weight="bold">O•</text>
+                        <text x="100" y="35" text-anchor="middle" font-size="26" fill="#1a4d7c" font-weight="bold">P•</text>
+                        <text x="100" y="120" text-anchor="middle" font-size="26" fill="#1a4d7c" font-weight="bold">Q•</text>
+                        <text x="100" y="185" text-anchor="middle" font-size="26" fill="#1a4d7c" font-weight="bold">R•</text>
+                    </svg>
+                    <p style="text-align: center; margin-top: 10px; font-weight: 600;">Grid 2 (with dots)</p>
+                </div>
+            </div>
+            
+            <div class="grid-explanation">
+                <p><strong>How it works:</strong> Each letter is represented by the shape of its "pen" 
+                plus a dot if it's in the second grid (J-R). The last letters (S-Z) use similar shapes.</p>
+                <p style="margin-top: 10px;"><strong>Example:</strong> The letter E is in the center of Grid 1, 
+                so it's represented by a square shape. The letter N is in Grid 2, so it has a dot inside.</p>
+            </div>
+        </div>
+        
+        <div class="encrypted-message">
+            <div class="encrypted-title">Decode This Message:</div>
+            <div style="margin: 30px 0;">
+                <svg width="100%" height="120" viewBox="0 0 900 120">
+                    <!-- HARD STARE AT WEBPAGE SLASH ROSIE -->
+                    <!-- H -->
+                    <rect x="10" y="40" width="30" height="40" fill="none" stroke="#d4322c" stroke-width="3"/>
+                    <line x1="10" y1="80" x2="40" y2="80" stroke="#d4322c" stroke-width="3"/>
+                    
+                    <!-- A -->
+                    <rect x="50" y="40" width="30" height="40" fill="none" stroke="#d4322c" stroke-width="3"/>
+                    <line x1="50" y1="40" x2="80" y2="40" stroke="#d4322c" stroke-width="3"/>
+                    <line x1="50" y1="80" x2="80" y2="80" stroke="#d4322c" stroke-width="3"/>
+                    
+                    <!-- R -->
+                    <polygon points="95,40 125,70 125,80 95,80" fill="none" stroke="#d4322c" stroke-width="3"/>
+                    <circle cx="110" cy="65" r="3" fill="#d4322c"/>
+                    
+                    <!-- D -->
+                    <rect x="135" y="40" width="30" height="40" fill="none" stroke="#d4322c" stroke-width="3"/>
+                    <line x1="135" y1="40" x2="165" y2="40" stroke="#d4322c" stroke-width="3"/>
+                    
+                    <!-- Space -->
+                    
+                    <!-- S -->
+                    <polygon points="190,40 220,40 220,70 190,70" fill="none" stroke="#d4322c" stroke-width="3"/>
+                    <line x1="220" y1="40" x2="220" y2="70" stroke="#d4322c" stroke-width="3"/>
+                    
+                    <!-- T -->
+                    <polygon points="235,40 265,70 265,80 235,80" fill="none" stroke="#d4322c" stroke-width="3"/>
+                    <line x1="235" y1="80" x2="265" y2="80" stroke="#d4322c" stroke-width="3"/>
+                    
+                    <!-- A -->
+                    <rect x="275" y="40" width="30" height="40" fill="none" stroke="#d4322c" stroke-width="3"/>
+                    <line x1="275" y1="40" x2="305" y2="40" stroke="#d4322c" stroke-width="3"/>
+                    <line x1="275" y1="80" x2="305" y2="80" stroke="#d4322c" stroke-width="3"/>
+                    
+                    <!-- R -->
+                    <polygon points="320,40 350,70 350,80 320,80" fill="none" stroke="#d4322c" stroke-width="3"/>
+                    <circle cx="335" cy="65" r="3" fill="#d4322c"/>
+                    
+                    <!-- E -->
+                    <rect x="360" y="40" width="30" height="40" fill="none" stroke="#d4322c" stroke-width="3"/>
+                    
+                    <!-- Space + AT -->
+                    <text x="410" y="70" font-size="30" fill="#1a4d7c" font-weight="bold">→</text>
+                    
+                    <!-- W -->
+                    <polygon points="450,40 480,40 480,70 450,70" fill="none" stroke="#d4322c" stroke-width="3"/>
+                    <line x1="450" y1="70" x2="480" y2="70" stroke="#d4322c" stroke-width="3"/>
+                    
+                    <!-- E -->
+                    <rect x="490" y="40" width="30" height="40" fill="none" stroke="#d4322c" stroke-width="3"/>
+                    
+                    <!-- B -->
+                    <rect x="530" y="40" width="30" height="40" fill="none" stroke="#d4322c" stroke-width="3"/>
+                    <line x1="560" y1="40" x2="560" y2="80" stroke="#d4322c" stroke-width="3"/>
+                    
+                    <!-- (continue with ROSIE...) -->
+                    <text x="580" y="70" font-size="30" fill="#1a4d7c" font-weight="bold">/ ROSIE</text>
+                </svg>
+            </div>
+            <p style="color: #666; font-size: 0.95em;">
+                (The symbols represent: "HARD STARE → WEB / ROSIE")
+            </p>
+        </div>
+        
+        <div class="answer-section">
+            <p class="question">What does the decoded message tell you to do?</p>
+            <p style="font-size: 1em; color: #666; margin-bottom: 20px;">
+                (Type the decoded phrase or the URL path it reveals)
+            </p>
+            <input type="text" id="answer" placeholder="Enter your answer..." autocomplete="off">
+            <br>
+            <button onclick="checkAnswer()">Submit Answer</button>
+            <div class="feedback" id="feedback"></div>
+            <p class="hint">Hint: The message mentions a webpage path... Where should you navigate?</p>
+        </div>
+    </div>
+    
+    <script>
+        let attempts = 0;
+        
+        function checkAnswer() {
+            const input = document.getElementById('answer').value.trim().toLowerCase();
+            const feedback = document.getElementById('feedback');
+            attempts++;
+            
+            // Accept various forms of the answer
+            const validAnswers = [
+                'rosie',
+                '/rosie',
+                'webpage/rosie',
+                'web/rosie',
+                'hardstare',
+                'hard stare',
+                'hardstareatwebpageslashrosie',
+                'hard stare at webpage slash rosie',
+                'hardstarewebrosie'
+            ];
+            
+            // Check if input contains key words
+            const hasRosie = input.includes('rosie');
+            const hasWeb = input.includes('web') || input.includes('page');
+            
+            if (hasRosie || validAnswers.some(ans => input.includes(ans))) {
+                feedback.className = 'feedback success';
+                feedback.innerHTML = `
+                    <p style="font-size: 1.4em; margin-bottom: 15px;">🎉 YOU DID IT! 🎉</p>
+                    <p>"HARD STARE AT WEBPAGE SLASH ROSIE!" Paddington reads triumphantly!</p>
+                    <p style="margin-top: 15px; font-size: 1.2em;">
+                        "It's telling us where to go next: <strong>/rosie</strong>"
+                    </p>
+                    <p style="margin-top: 20px;">Redirecting you to the final reveal...</p>
+                `;
+                
+                setTimeout(() => {
+                    window.location.href = '../rosie/index.html';
+                }, 4000);
+            } else {
+                feedback.className = 'feedback error';
+                
+                if (attempts === 1) {
+                    feedback.innerHTML = `
+                        <p>❌ Not quite...</p>
+                        <p>"Try decoding the symbols using the Pigpen cipher key," Mr. Gruber suggests.</p>
+                    `;
+                } else if (attempts === 2) {
+                    feedback.innerHTML = `
+                        <p>❌ Keep trying...</p>
+                        <p>"The message says something about a hard stare and a webpage," Paddington hints. 
+                        "And there's a name at the end!"</p>
+                    `;
+                } else if (attempts === 3) {
+                    feedback.innerHTML = `
+                        <p>❌ Almost there...</p>
+                        <p>Mrs. Bird whispers: "It spells out: HARD STARE AT WEBPAGE SLASH ROSIE. 
+                        Think about where that might lead you..."</p>
+                    `;
+                } else {
+                    feedback.innerHTML = `
+                        <p>❌ Let me help...</p>
+                        <p>"Just type 'rosie' or '/rosie'!" Jonathan exclaims. 
+                        "It's directing you to a webpage path!"</p>
+                    `;
+                }
+            }
+        }
+        
+        document.getElementById('answer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        
+        window.onload = function() {
+            document.getElementById('answer').focus();
+        };
+    </script>
+</body>
+</html>
+

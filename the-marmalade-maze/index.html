@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 7: The Marmalade Maze</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5c4 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c1810;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #fdfbf7;
+            border: 3px solid #8b4513;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 50px;
+            position: relative;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: #e8d5c4;
+            border-radius: 15px 15px 0 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                #d4322c 0px,
+                #d4322c 10px,
+                #fdfbf7 10px,
+                #fdfbf7 20px
+            );
+            width: 87.5%;
+        }
+        
+        .level-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .level-number {
+            font-size: 1.2em;
+            color: #d4322c;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            color: #1a4d7c;
+            margin: 10px 0;
+        }
+        
+        .story-box {
+            background: #fff9e6;
+            border: 3px solid #8b4513;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 20px 0;
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+        
+        .game-instructions {
+            background: white;
+            border: 3px solid #1a4d7c;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+        }
+        
+        .maze-container {
+            background: white;
+            border: 4px solid #8b4513;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px auto;
+            max-width: 600px;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+        
+        #mazeCanvas {
+            border: 2px solid #1a4d7c;
+            display: block;
+            margin: 0 auto;
+            border-radius: 5px;
+        }
+        
+        .controls {
+            text-align: center;
+            margin: 20px 0;
+            font-size: 1.1em;
+        }
+        
+        .control-button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 1.1em;
+            background: #1a4d7c;
+            color: white;
+            border: 2px solid #8b4513;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'Crimson Text', serif;
+            font-weight: 600;
+        }
+        
+        .control-button:hover {
+            background: #d4322c;
+        }
+        
+        .fibonacci-box {
+            background: #f0f8ff;
+            border: 3px solid #d4322c;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            display: none;
+        }
+        
+        .fibonacci-sequence {
+            font-family: 'Courier New', monospace;
+            font-size: 1.8em;
+            margin: 20px 0;
+            color: #1a4d7c;
+            letter-spacing: 3px;
+        }
+        
+        .answer-section {
+            margin: 30px 0;
+            text-align: center;
+        }
+        
+        .question {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1a4d7c;
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"] {
+            width: 250px;
+            padding: 15px 20px;
+            font-size: 1.3em;
+            font-family: 'Crimson Text', serif;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            text-align: center;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1a4d7c;
+            box-shadow: 0 0 10px rgba(26, 77, 124, 0.3);
+        }
+        
+        button {
+            margin: 20px 10px;
+            padding: 15px 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #fdfbf7;
+            background: #1a4d7c;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #d4322c;
+            transform: translateY(-2px);
+        }
+        
+        .feedback {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            text-align: center;
+            display: none;
+        }
+        
+        .feedback.error {
+            background: #ffe6e6;
+            border: 2px solid #d4322c;
+            color: #8b0000;
+            display: block;
+        }
+        
+        .feedback.success {
+            background: #e6ffe6;
+            border: 2px solid #2d7d2d;
+            color: #0b4d0b;
+            display: block;
+        }
+        
+        .hint {
+            font-size: 1em;
+            color: #666;
+            font-style: italic;
+            margin-top: 15px;
+        }
+        
+        .status {
+            text-align: center;
+            font-size: 1.2em;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        
+        <div class="level-header">
+            <p class="level-number">LEVEL 7 OF 8</p>
+            <h1>The Marmalade Maze</h1>
+        </div>
+        
+        <div class="story-box">
+            <p style="margin: 15px 0;">
+                "ROSIE!" Paddington exclaims, clutching the recipe box tightly. 
+                "Of course! But wait..."
+            </p>
+            
+            <p style="margin: 15px 0;">
+                Mrs. Bird's pantry door creaks open to reveal a strange contraption — 
+                a maze made entirely of marmalade jars gleaming in the afternoon light!
+            </p>
+            
+            <p style="margin: 15px 0; font-style: italic;">
+                "To reach the special jar marked for Rosie, you must navigate from 
+                START to FINISH. But beware — one wrong turn means starting over!"
+            </p>
+        </div>
+        
+        <div class="game-instructions">
+            <p style="font-size: 1.2em; font-weight: 600; margin-bottom: 15px; color: #d4322c;">
+                🧸 USE ARROW KEYS TO GUIDE PADDINGTON 🧸
+            </p>
+            <p style="margin: 10px 0;">🍊 Collect oranges for bonus points</p>
+            <p style="margin: 10px 0;">🎯 Find the path to the ✨ ROSIE JAR ✨</p>
+            <p style="margin: 15px 0; font-size: 0.95em; color: #666;">
+                (Or use the buttons below on mobile)
+            </p>
+        </div>
+        
+        <div class="maze-container">
+            <canvas id="mazeCanvas" width="560" height="560"></canvas>
+            <div class="status" id="status">Find the ROSIE jar!</div>
+            <div class="controls">
+                <div>
+                    <button class="control-button" onclick="movePlayer(0, -1)">↑</button>
+                </div>
+                <div>
+                    <button class="control-button" onclick="movePlayer(-1, 0)">←</button>
+                    <button class="control-button" onclick="movePlayer(1, 0)">→</button>
+                </div>
+                <div>
+                    <button class="control-button" onclick="movePlayer(0, 1)">↓</button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="fibonacci-box" id="fibonacciBox">
+            <p style="font-size: 1.3em; font-weight: 600; margin-bottom: 20px;">
+                🎉 You found the ROSIE jar! 🎉
+            </p>
+            <p style="margin: 15px 0; line-height: 1.8;">
+                But wait! The jar is locked with a mathematical sequence. 
+                Mrs. Bird shows you a pattern of numbers on the label:
+            </p>
+            <div class="fibonacci-sequence">
+                1, 1, 2, 3, 5, 8, 13, 21, ??
+            </div>
+            <p style="margin: 15px 0; font-size: 1.1em;">
+                "Each number is the sum of the previous two!" Paddington exclaims.
+            </p>
+            <p style="margin: 10px 0;">
+                13 + 21 = ??
+            </p>
+            <div class="answer-section">
+                <p class="question">What is the next number in the sequence?</p>
+                <input type="text" id="answer" placeholder="Enter number..." autocomplete="off">
+                <br>
+                <button onclick="checkAnswer()">Submit Answer</button>
+                <div class="feedback" id="feedback"></div>
+                <p class="hint">Hint: This is the Fibonacci sequence. Add the last two numbers!</p>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Maze configuration
+        const canvas = document.getElementById('mazeCanvas');
+        const ctx = canvas.getContext('2d');
+        const cellSize = 40;
+        const gridSize = 14;
+        
+        // Maze layout (0 = wall, 1 = path, 2 = orange, 3 = goal)
+        const maze = [
+            [1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1],
+            [0, 0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1],
+            [0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+            [0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1],
+            [0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1],
+            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+            [0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1],
+            [0, 1, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0],
+            [0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 0],
+            [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3, 0]
+        ];
+        
+        // Add some oranges
+        maze[1][3] = 2;
+        maze[3][5] = 2;
+        maze[5][10] = 2;
+        maze[7][7] = 2;
+        maze[9][4] = 2;
+        maze[11][10] = 2;
+        
+        let player = { x: 0, y: 0 };
+        let oranges = 0;
+        let mazeComplete = false;
+        
+        function drawMaze() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            for (let y = 0; y < gridSize; y++) {
+                for (let x = 0; x < gridSize; x++) {
+                    const cell = maze[y][x];
+                    
+                    if (cell === 0) {
+                        // Wall
+                        ctx.fillStyle = '#8b4513';
+                        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                    } else if (cell === 1) {
+                        // Path
+                        ctx.fillStyle = '#fff9e6';
+                        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                    } else if (cell === 2) {
+                        // Orange
+                        ctx.fillStyle = '#fff9e6';
+                        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                        ctx.fillStyle = '#ff8c00';
+                        ctx.font = '30px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText('🍊', x * cellSize + cellSize/2, y * cellSize + cellSize/2);
+                    } else if (cell === 3) {
+                        // Goal
+                        ctx.fillStyle = '#ffd700';
+                        ctx.fillRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                        ctx.fillStyle = '#d4322c';
+                        ctx.font = '25px Arial';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText('🎯', x * cellSize + cellSize/2, y * cellSize + cellSize/2);
+                    }
+                    
+                    // Grid lines
+                    ctx.strokeStyle = '#ddd';
+                    ctx.strokeRect(x * cellSize, y * cellSize, cellSize, cellSize);
+                }
+            }
+            
+            // Draw player (Paddington)
+            ctx.fillStyle = '#1a4d7c';
+            ctx.font = '35px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('🧸', player.x * cellSize + cellSize/2, player.y * cellSize + cellSize/2);
+        }
+        
+        function movePlayer(dx, dy) {
+            if (mazeComplete) return;
+            
+            const newX = player.x + dx;
+            const newY = player.y + dy;
+            
+            // Check bounds
+            if (newX < 0 || newX >= gridSize || newY < 0 || newY >= gridSize) {
+                return;
+            }
+            
+            // Check if not a wall
+            if (maze[newY][newX] !== 0) {
+                player.x = newX;
+                player.y = newY;
+                
+                // Check for orange
+                if (maze[newY][newX] === 2) {
+                    oranges++;
+                    maze[newY][newX] = 1; // Remove orange
+                    document.getElementById('status').textContent = 
+                        `Oranges collected: ${oranges} 🍊`;
+                }
+                
+                // Check for goal
+                if (maze[newY][newX] === 3) {
+                    mazeComplete = true;
+                    document.getElementById('status').textContent = 
+                        '🎉 You found the ROSIE jar! 🎉';
+                    document.getElementById('fibonacciBox').style.display = 'block';
+                    document.getElementById('fibonacciBox').scrollIntoView({ behavior: 'smooth' });
+                }
+                
+                drawMaze();
+            }
+        }
+        
+        // Keyboard controls
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowUp':
+                    e.preventDefault();
+                    movePlayer(0, -1);
+                    break;
+                case 'ArrowDown':
+                    e.preventDefault();
+                    movePlayer(0, 1);
+                    break;
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    movePlayer(-1, 0);
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    movePlayer(1, 0);
+                    break;
+            }
+        });
+        
+        // Answer checking
+        let attempts = 0;
+        
+        function checkAnswer() {
+            const input = document.getElementById('answer').value.trim();
+            const feedback = document.getElementById('feedback');
+            attempts++;
+            
+            if (input === '34') {
+                feedback.className = 'feedback success';
+                feedback.innerHTML = `
+                    <p style="font-size: 1.3em; margin-bottom: 10px;">✨ Brilliant! ✨</p>
+                    <p>"34! The Fibonacci sequence!" Paddington cheers!</p>
+                    <p style="margin-top: 10px;">"13 + 21 = 34!"</p>
+                    <p style="margin-top: 15px;">The jar clicks open... One final puzzle awaits!</p>
+                `;
+                
+                setTimeout(() => {
+                    window.location.href = '../the-lockbox-grid/index.html';
+                }, 4000);
+            } else {
+                feedback.className = 'feedback error';
+                
+                if (attempts === 1) {
+                    feedback.innerHTML = `
+                        <p>❌ Not quite...</p>
+                        <p>"Remember, each number is the sum of the previous two!" Paddington says.</p>
+                    `;
+                } else if (attempts === 2) {
+                    feedback.innerHTML = `
+                        <p>❌ Keep trying...</p>
+                        <p>"What is 13 plus 21?" Mrs. Bird asks gently.</p>
+                    `;
+                } else {
+                    feedback.innerHTML = `
+                        <p>❌ One more try...</p>
+                        <p>"13 + 21 = 34!" Mr. Gruber calls out. "The next Fibonacci number!"</p>
+                    `;
+                }
+            }
+        }
+        
+        document.getElementById('answer')?.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        
+        // Initialize
+        drawMaze();
+    </script>
+</body>
+</html>
+

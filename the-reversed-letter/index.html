@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 2: The Reversed Letter</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5c4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #2c1810;
+        }
+        
+        .container {
+            max-width: 900px;
+            background: #fdfbf7;
+            border: 3px solid #8b4513;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 50px;
+            position: relative;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: #e8d5c4;
+            border-radius: 15px 15px 0 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                #d4322c 0px,
+                #d4322c 10px,
+                #fdfbf7 10px,
+                #fdfbf7 20px
+            );
+            width: 25%;
+        }
+        
+        .level-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .level-number {
+            font-size: 1.2em;
+            color: #d4322c;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            color: #1a4d7c;
+            margin: 10px 0;
+        }
+        
+        .puzzle-box {
+            background: #fff9e6;
+            border: 3px solid #8b4513;
+            border-radius: 10px;
+            padding: 40px;
+            margin: 30px 0;
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+        
+        .letter-header {
+            text-align: center;
+            font-weight: bold;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border: 2px dashed #8b4513;
+        }
+        
+        .cipher-key {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border: 2px solid #1a4d7c;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.1em;
+            text-align: center;
+            line-height: 2;
+        }
+        
+        .encrypted-message {
+            background: #f0e68c;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            font-family: 'Courier New', monospace;
+            font-size: 2em;
+            letter-spacing: 5px;
+            font-weight: bold;
+            border: 3px solid #d4322c;
+            border-radius: 10px;
+            color: #8b0000;
+        }
+        
+        .story-text {
+            margin: 15px 0;
+            line-height: 1.8;
+        }
+        
+        .answer-section {
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .question {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1a4d7c;
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"] {
+            width: 300px;
+            padding: 15px 20px;
+            font-size: 1.3em;
+            font-family: 'Crimson Text', serif;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            text-align: center;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1a4d7c;
+            box-shadow: 0 0 10px rgba(26, 77, 124, 0.3);
+        }
+        
+        button {
+            margin: 20px 10px;
+            padding: 15px 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #fdfbf7;
+            background: #1a4d7c;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #d4322c;
+            transform: translateY(-2px);
+        }
+        
+        .feedback {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            text-align: center;
+            display: none;
+        }
+        
+        .feedback.error {
+            background: #ffe6e6;
+            border: 2px solid #d4322c;
+            color: #8b0000;
+            display: block;
+        }
+        
+        .feedback.success {
+            background: #e6ffe6;
+            border: 2px solid #2d7d2d;
+            color: #0b4d0b;
+            display: block;
+        }
+        
+        .hint {
+            font-size: 1em;
+            color: #666;
+            font-style: italic;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        
+        <div class="level-header">
+            <p class="level-number">LEVEL 2 OF 8</p>
+            <h1>The Reversed Letter</h1>
+        </div>
+        
+        <div class="puzzle-box">
+            <p class="story-text">
+                In the hallway of 32 Windsor Gardens, Mrs. Bird discovers a letter 
+                tucked behind the umbrella stand. The envelope is marked in elegant script:
+            </p>
+            
+            <div class="letter-header">
+                "WHEN ALL SEEMS BACKWARDS,<br>
+                LOOK TO THE STARS"
+            </div>
+            
+            <p class="story-text">
+                Paddington opens it with trembling paws. Inside, Mr. Gruber has left a note:
+            </p>
+            
+            <p class="story-text" style="font-style: italic; background: white; padding: 20px; border-left: 4px solid #1a4d7c;">
+                "My dear Paddington, this is what scholars call 'mirror writing' — 
+                each letter swapped for its opposite in the alphabet. We call it <strong>Atbash</strong>. 
+                I've provided you the key below."
+            </p>
+            
+            <div class="cipher-key">
+                <strong>The Atbash Key:</strong><br><br>
+                A↔Z, B↔Y, C↔X, D↔W, E↔V, F↔U, G↔T, H↔S, I↔R, J↔Q,<br>
+                K↔P, L↔O, M↔N...
+            </div>
+            
+            <p class="story-text" style="text-align: center; font-weight: 600;">
+                The encrypted message reads:
+            </p>
+            
+            <div class="encrypted-message">
+                HGZI FIHZ NRMLI
+            </div>
+            
+            <p class="story-text" style="font-style: italic;">
+                "Once decoded," Paddington reads on, "the words will point you toward something 
+                to count. Bears have excellent counting skills, you know."
+            </p>
+            
+            <p class="story-text" style="text-align: center; font-weight: 600; color: #d4322c;">
+                Your answer is merely a number.
+            </p>
+        </div>
+        
+        <div class="answer-section">
+            <p class="question">What number is the answer?</p>
+            <input type="text" id="answer" placeholder="Enter a number..." autocomplete="off">
+            <br>
+            <button onclick="checkAnswer()">Submit Answer</button>
+            <div class="feedback" id="feedback"></div>
+            <p class="hint">First decode the message using the Atbash cipher, then think about what you need to count...</p>
+        </div>
+    </div>
+    
+    <script>
+        let attempts = 0;
+        
+        function checkAnswer() {
+            const input = document.getElementById('answer').value.trim().toLowerCase();
+            const feedback = document.getElementById('feedback');
+            attempts++;
+            
+            const correctAnswers = ['7', 'seven'];
+            
+            if (correctAnswers.includes(input)) {
+                feedback.className = 'feedback success';
+                feedback.innerHTML = `
+                    <p style="font-size: 1.3em; margin-bottom: 10px;">⭐ Excellent work! ⭐</p>
+                    <p>"STAR URSA MINOR!" Paddington exclaims. "The Little Dipper has exactly seven stars!"</p>
+                    <p style="margin-top: 15px;">Mr. Gruber nods approvingly. "Most impressive. Now, onward to the next clue..."</p>
+                `;
+                
+                setTimeout(() => {
+                    window.location.href = '../the-merchants-riddle/index.html';
+                }, 3500);
+            } else {
+                feedback.className = 'feedback error';
+                
+                if (attempts === 1) {
+                    feedback.innerHTML = `
+                        <p>❌ Not quite right...</p>
+                        <p>Paddington looks puzzled. "Have you decoded the Atbash cipher correctly?"</p>
+                    `;
+                } else if (attempts === 2) {
+                    feedback.innerHTML = `
+                        <p>❌ Still not correct...</p>
+                        <p>Mr. Gruber suggests: "Remember, H becomes S, G becomes T, Z becomes A... 
+                        Try working through each letter carefully."</p>
+                    `;
+                } else if (attempts === 3) {
+                    feedback.innerHTML = `
+                        <p>❌ Keep trying...</p>
+                        <p>"The decoded message says: STAR URSA MINOR," Mrs. Bird whispers. 
+                        "Now you need to count something about that constellation!"</p>
+                    `;
+                } else {
+                    feedback.innerHTML = `
+                        <p>❌ One more try...</p>
+                        <p>"Ursa Minor is also called the Little Dipper," Paddington says. 
+                        "How many stars form that constellation?"</p>
+                    `;
+                }
+            }
+        }
+        
+        document.getElementById('answer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        
+        window.onload = function() {
+            document.getElementById('answer').focus();
+        };
+    </script>
+</body>
+</html>
+

@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 3: The Merchant's Riddle</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5c4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #2c1810;
+        }
+        
+        .container {
+            max-width: 900px;
+            background: #fdfbf7;
+            border: 3px solid #8b4513;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 50px;
+            position: relative;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: #e8d5c4;
+            border-radius: 15px 15px 0 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                #d4322c 0px,
+                #d4322c 10px,
+                #fdfbf7 10px,
+                #fdfbf7 20px
+            );
+            width: 37.5%;
+        }
+        
+        .level-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .level-number {
+            font-size: 1.2em;
+            color: #d4322c;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            color: #1a4d7c;
+            margin: 10px 0;
+        }
+        
+        .puzzle-box {
+            background: #fff9e6;
+            border: 3px solid #8b4513;
+            border-radius: 10px;
+            padding: 40px;
+            margin: 30px 0;
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+        
+        .ornate-card {
+            background: white;
+            border: 4px double #8b4513;
+            padding: 30px;
+            margin: 25px 0;
+            text-align: center;
+            line-height: 2;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            font-weight: 700;
+            color: #d4322c;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        
+        .instagram-link {
+            display: inline-block;
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+            color: white;
+            padding: 15px 30px;
+            margin: 20px 0;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.2em;
+            transition: transform 0.3s ease;
+        }
+        
+        .instagram-link:hover {
+            transform: scale(1.05);
+        }
+        
+        .story-text {
+            margin: 15px 0;
+            line-height: 1.8;
+        }
+        
+        .warning-box {
+            background: #fff0f0;
+            border: 3px solid #d4322c;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .answer-section {
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .question {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1a4d7c;
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"] {
+            width: 300px;
+            padding: 15px 20px;
+            font-size: 1.3em;
+            font-family: 'Crimson Text', serif;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            text-align: center;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1a4d7c;
+            box-shadow: 0 0 10px rgba(26, 77, 124, 0.3);
+        }
+        
+        button {
+            margin: 20px 10px;
+            padding: 15px 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #fdfbf7;
+            background: #1a4d7c;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #d4322c;
+            transform: translateY(-2px);
+        }
+        
+        .feedback {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            text-align: center;
+            display: none;
+        }
+        
+        .feedback.error {
+            background: #ffe6e6;
+            border: 2px solid #d4322c;
+            color: #8b0000;
+            display: block;
+        }
+        
+        .feedback.success {
+            background: #e6ffe6;
+            border: 2px solid #2d7d2d;
+            color: #0b4d0b;
+            display: block;
+        }
+        
+        .hint {
+            font-size: 1em;
+            color: #666;
+            font-style: italic;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        
+        <div class="level-header">
+            <p class="level-number">LEVEL 3 OF 8</p>
+            <h1>The Merchant's Riddle</h1>
+        </div>
+        
+        <div class="puzzle-box">
+            <p class="story-text">
+                Mr. Gruber peers over his spectacles at the number seven, stroking his chin thoughtfully.
+            </p>
+            
+            <p class="story-text" style="font-style: italic;">
+                "Ah yes, seven... Most curious. That reminds me of something..."
+            </p>
+            
+            <p class="story-text">
+                He produces a yellowed card from his antique desk, its edges gilded with age:
+            </p>
+            
+            <div class="ornate-card">
+                <div class="card-title">The Next Clue Resides</div>
+                <p style="margin: 15px 0;">
+                    In captured moments<br>
+                    Where sweetness is bottled for winter's keeping
+                </p>
+                <hr style="border: 1px solid #8b4513; margin: 20px 0;">
+                <p style="margin: 15px 0;">
+                    Seek the bear's looking-glass portal<br>
+                    <strong style="color: #d4322c;">@paddingtonbear</strong><br>
+                    October's final days
+                </p>
+                <hr style="border: 1px solid #8b4513; margin: 20px 0;">
+                <p style="margin: 15px 0;">
+                    Find the display of autumnal enchantments<br>
+                    Where masked celebrations meet marmalade dreams
+                </p>
+                <hr style="border: 1px solid #8b4513; margin: 20px 0;">
+                <p style="margin: 15px 0; font-weight: 600;">
+                    YOUR TASK: Count only vessels bearing<br>
+                    the crimson checkered seal — the true<br>
+                    mark of Paddington's preserve
+                </p>
+                <div class="warning-box">
+                    ⚠️ Beware: Not all jars are worthy of counting<br>
+                    Only those crowned in RED GINGHAM hold secrets ⚠️
+                </div>
+            </div>
+            
+            <p class="story-text" style="text-align: center;">
+                "It's quite simple," Mr. Gruber smiles warmly. "Find the October post 
+                showing the Paddington Store's Halloween display."
+            </p>
+            
+            <p class="story-text" style="text-align: center; font-weight: 600; font-size: 1.2em; color: #d4322c;">
+                Count ONLY the marmalade jars with red checkered lids.
+            </p>
+            
+            <a href="https://www.instagram.com/paddingtonbear/" target="_blank" class="instagram-link">
+                📸 Visit @paddingtonbear on Instagram
+            </a>
+            
+            <p class="story-text" style="text-align: center; font-size: 0.95em; color: #666;">
+                (Look for the post from October 25, 2024 — Halloween display with wizard Paddington)
+            </p>
+        </div>
+        
+        <div class="answer-section">
+            <p class="question">How many jars with red gingham lids can you count?</p>
+            <input type="text" id="answer" placeholder="Enter a number..." autocomplete="off">
+            <br>
+            <button onclick="checkAnswer()">Submit Answer</button>
+            <div class="feedback" id="feedback"></div>
+            <p class="hint">Look carefully at the left side of the display — only count jars with the distinctive red checkered pattern!</p>
+        </div>
+    </div>
+    
+    <script>
+        let attempts = 0;
+        
+        function checkAnswer() {
+            const input = document.getElementById('answer').value.trim().toLowerCase();
+            const feedback = document.getElementById('feedback');
+            attempts++;
+            
+            const correctAnswers = ['6', 'six'];
+            
+            if (correctAnswers.includes(input)) {
+                feedback.className = 'feedback success';
+                feedback.innerHTML = `
+                    <p style="font-size: 1.3em; margin-bottom: 10px;">🎃 Splendid! 🎃</p>
+                    <p>"Six jars with proper red gingham lids — exactly right!" Mr. Gruber beams.</p>
+                    <p style="margin-top: 15px;">"You have a keen eye for detail. Mrs. Bird will be most impressed..."</p>
+                `;
+                
+                setTimeout(() => {
+                    window.location.href = '../the-torn-diary/index.html';
+                }, 3500);
+            } else {
+                feedback.className = 'feedback error';
+                
+                if (attempts === 1) {
+                    feedback.innerHTML = `
+                        <p>❌ Not quite...</p>
+                        <p>"Look carefully — only jars with the distinctive red checkered pattern count!"</p>
+                    `;
+                } else if (attempts === 2) {
+                    feedback.innerHTML = `
+                        <p>❌ Still not correct...</p>
+                        <p>Mr. Gruber says gently: "The distinctive gingham pattern is red — like Aunt Lucy's tablecloth!"</p>
+                    `;
+                } else if (attempts === 3) {
+                    feedback.innerHTML = `
+                        <p>❌ Keep looking...</p>
+                        <p>"Try counting the jars on the left side of the display," Paddington suggests. 
+                        "Some jars might have different colored lids!"</p>
+                    `;
+                } else {
+                    feedback.innerHTML = `
+                        <p>❌ One more careful look...</p>
+                        <p>"Focus on the Halloween display from October 25th. The jars with red checkered lids 
+                        are mostly grouped together. Count very carefully!"</p>
+                    `;
+                }
+            }
+        }
+        
+        document.getElementById('answer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        
+        window.onload = function() {
+            document.getElementById('answer').focus();
+        };
+    </script>
+</body>
+</html>
+

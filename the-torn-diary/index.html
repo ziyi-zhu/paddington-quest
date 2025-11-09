@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 4: The Torn Diary</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5c4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #2c1810;
+        }
+        
+        .container {
+            max-width: 900px;
+            background: #fdfbf7;
+            border: 3px solid #8b4513;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 50px;
+            position: relative;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: #e8d5c4;
+            border-radius: 15px 15px 0 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                #d4322c 0px,
+                #d4322c 10px,
+                #fdfbf7 10px,
+                #fdfbf7 20px
+            );
+            width: 50%;
+        }
+        
+        .level-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .level-number {
+            font-size: 1.2em;
+            color: #d4322c;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            color: #1a4d7c;
+            margin: 10px 0;
+        }
+        
+        .puzzle-box {
+            background: #fff9e6;
+            border: 3px solid #8b4513;
+            border-radius: 10px;
+            padding: 40px;
+            margin: 30px 0;
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+        
+        .diary-page {
+            background: linear-gradient(to bottom, #fdfbf7 0%, #f5f0e8 100%);
+            border: 4px double #8b4513;
+            padding: 40px;
+            margin: 25px 0;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .diary-page::before {
+            content: '';
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background: #d4322c;
+            opacity: 0.1;
+            transform: rotate(45deg);
+        }
+        
+        .date-display {
+            font-family: 'Courier New', monospace;
+            font-size: 2.5em;
+            text-align: center;
+            margin: 20px 0;
+            letter-spacing: 3px;
+        }
+        
+        .date-clear {
+            color: #2c1810;
+            font-weight: bold;
+        }
+        
+        .date-obscured {
+            color: #bbb;
+            text-shadow: 0 0 8px rgba(0,0,0,0.3);
+            position: relative;
+        }
+        
+        .date-label {
+            font-size: 0.9em;
+            font-style: italic;
+            text-align: center;
+            margin-top: 10px;
+            color: #666;
+        }
+        
+        .story-text {
+            margin: 15px 0;
+            line-height: 1.8;
+        }
+        
+        .poetry {
+            text-align: center;
+            font-style: italic;
+            margin: 20px 0;
+            line-height: 2;
+            color: #d4322c;
+        }
+        
+        .instruction-box {
+            background: white;
+            border: 3px solid #1a4d7c;
+            border-radius: 8px;
+            padding: 25px;
+            margin: 25px 0;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.15em;
+        }
+        
+        .answer-section {
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .question {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1a4d7c;
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"] {
+            width: 300px;
+            padding: 15px 20px;
+            font-size: 1.3em;
+            font-family: 'Crimson Text', serif;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            text-align: center;
+            background: white;
+            transition: all 0.3s ease;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1a4d7c;
+            box-shadow: 0 0 10px rgba(26, 77, 124, 0.3);
+        }
+        
+        button {
+            margin: 20px 10px;
+            padding: 15px 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #fdfbf7;
+            background: #1a4d7c;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #d4322c;
+            transform: translateY(-2px);
+        }
+        
+        .feedback {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            text-align: center;
+            display: none;
+        }
+        
+        .feedback.error {
+            background: #ffe6e6;
+            border: 2px solid #d4322c;
+            color: #8b0000;
+            display: block;
+        }
+        
+        .feedback.success {
+            background: #e6ffe6;
+            border: 2px solid #2d7d2d;
+            color: #0b4d0b;
+            display: block;
+        }
+        
+        .hint {
+            font-size: 1em;
+            color: #666;
+            font-style: italic;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        
+        <div class="level-header">
+            <p class="level-number">LEVEL 4 OF 8</p>
+            <h1>The Torn Diary</h1>
+        </div>
+        
+        <div class="puzzle-box">
+            <p class="story-text">
+                Mrs. Bird appears from the kitchen with a knowing look, clutching her diary close to her apron.
+            </p>
+            
+            <p class="story-text" style="font-style: italic;">
+                "I found this torn page near the fireplace. Someone's been trying to hide something important..."
+            </p>
+            
+            <p class="story-text">
+                She shows you two dates, one clear as day, the other mysteriously obscured:
+            </p>
+            
+            <div class="diary-page">
+                <div style="text-align: center; margin-bottom: 30px;">
+                    <div class="date-display date-clear">18 / 11 / 1997</div>
+                    <div class="date-label">A remarkable soul arrived</div>
+                </div>
+                
+                <hr style="border: 2px solid #8b4513; margin: 30px 0;">
+                
+                <div style="text-align: center; margin-top: 30px;">
+                    <div class="date-display date-obscured">• • / • • / 2024</div>
+                    <div class="poetry">
+                        Two hearts, one celebration<br>
+                        When spring's blossoms danced
+                    </div>
+                </div>
+            </div>
+            
+            <p class="story-text">
+                Mr. Brown appears behind Mrs. Bird, placing a gentle hand on her shoulder:
+            </p>
+            
+            <p class="story-text" style="font-style: italic; background: white; padding: 20px; border-left: 4px solid #1a4d7c;">
+                "The second date marks something precious — a joyous union celebrated when 
+                the gardens bloomed. Think of spring's sweet month, when love was in the air 
+                and Rosie wore her most beautiful smile."
+            </p>
+            
+            <div class="instruction-box">
+                📝 Mrs. Bird instructs: 📝<br><br>
+                "Add every single digit from BOTH dates together.<br>
+                The sum unlocks the next door."
+            </div>
+            
+            <p class="story-text" style="text-align: center; font-size: 1.1em; color: #666;">
+                Can you deduce the obscured anniversary and calculate the total?
+            </p>
+        </div>
+        
+        <div class="answer-section">
+            <p class="question">What is the sum of all digits from both dates?</p>
+            <input type="text" id="answer" placeholder="Enter the sum..." autocomplete="off">
+            <br>
+            <button onclick="checkAnswer()">Submit Answer</button>
+            <div class="feedback" id="feedback"></div>
+            <p class="hint">First figure out the wedding date (spring month, 2024), then add ALL individual digits from both dates!</p>
+        </div>
+    </div>
+    
+    <script>
+        let attempts = 0;
+        
+        function checkAnswer() {
+            const input = document.getElementById('answer').value.trim();
+            const feedback = document.getElementById('feedback');
+            attempts++;
+            
+            if (input === '60') {
+                feedback.className = 'feedback success';
+                feedback.innerHTML = `
+                    <p style="font-size: 1.3em; margin-bottom: 10px;">💍 Perfect! 💍</p>
+                    <p>"28th of May, 2024!" Mrs. Bird exclaims with tears of joy.</p>
+                    <p style="margin-top: 10px;">"18/11/1997: 1+8+1+1+1+9+9+7 = 37"</p>
+                    <p>"28/05/2024: 2+8+0+5+2+0+2+4 = 23"</p>
+                    <p style="margin-top: 10px; font-weight: 600;">"Total: 37 + 23 = 60!"</p>
+                    <p style="margin-top: 15px;">"Well done, dear. Now let's see what Mr. Gruber has in his archive..."</p>
+                `;
+                
+                setTimeout(() => {
+                    window.location.href = '../the-scholars-archive/index.html';
+                }, 4500);
+            } else {
+                feedback.className = 'feedback error';
+                
+                if (attempts === 1) {
+                    feedback.innerHTML = `
+                        <p>❌ Not quite...</p>
+                        <p>"Have you figured out the wedding date?" Mrs. Bird asks gently.</p>
+                    `;
+                } else if (attempts === 2) {
+                    feedback.innerHTML = `
+                        <p>❌ Still searching...</p>
+                        <p>Mr. Brown hints: "Spring's sweet month... Think of May flowers and wedding bells. 
+                        The date was late in that month, and the day adds up to 10."</p>
+                    `;
+                } else if (attempts === 3) {
+                    feedback.innerHTML = `
+                        <p>❌ Keep trying...</p>
+                        <p>"The wedding was on 28/05/2024," Paddington whispers. 
+                        "Now add each digit: 2+8+0+5+2+0+2+4 = ?"</p>
+                    `;
+                } else {
+                    feedback.innerHTML = `
+                        <p>❌ Almost there...</p>
+                        <p>Mrs. Bird explains: "First date gives 1+8+1+1+1+9+9+7 = 37. 
+                        Second date gives 2+8+0+5+2+0+2+4 = 23. Add those two sums together!"</p>
+                    `;
+                }
+            }
+        }
+        
+        document.getElementById('answer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        
+        window.onload = function() {
+            document.getElementById('answer').focus();
+        };
+    </script>
+</body>
+</html>
+

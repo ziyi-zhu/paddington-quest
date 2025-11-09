@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 6: The Landmarks Cipher</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5c4 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #2c1810;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background: #fdfbf7;
+            border: 3px solid #8b4513;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 50px;
+            position: relative;
+        }
+        
+        .progress-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: #e8d5c4;
+            border-radius: 15px 15px 0 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: repeating-linear-gradient(
+                90deg,
+                #d4322c 0px,
+                #d4322c 10px,
+                #fdfbf7 10px,
+                #fdfbf7 20px
+            );
+            width: 75%;
+        }
+        
+        .level-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .level-number {
+            font-size: 1.2em;
+            color: #d4322c;
+            font-weight: 600;
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5em;
+            color: #1a4d7c;
+            margin: 10px 0;
+        }
+        
+        .puzzle-box {
+            background: #fff9e6;
+            border: 3px solid #8b4513;
+            border-radius: 10px;
+            padding: 40px;
+            margin: 30px 0;
+            font-size: 1.15em;
+            line-height: 1.8;
+        }
+        
+        .story-text {
+            margin: 15px 0;
+            line-height: 1.8;
+        }
+        
+        .map-icon {
+            text-align: center;
+            font-size: 4em;
+            margin: 20px 0;
+        }
+        
+        .landmark-card {
+            background: white;
+            border: 3px solid #1a4d7c;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px 0;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .landmark-card:hover {
+            transform: translateX(5px);
+        }
+        
+        .landmark-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            color: #d4322c;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .landmark-clue {
+            margin: 10px 0;
+            line-height: 1.8;
+        }
+        
+        .landmark-hint {
+            font-size: 0.95em;
+            color: #666;
+            font-style: italic;
+            margin-top: 10px;
+        }
+        
+        .instruction-box {
+            background: #f0f8ff;
+            border: 3px solid #1a4d7c;
+            border-radius: 10px;
+            padding: 30px;
+            margin: 30px 0;
+            text-align: center;
+            font-weight: 600;
+            font-size: 1.2em;
+        }
+        
+        .answer-section {
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .question {
+            font-size: 1.3em;
+            font-weight: 600;
+            color: #1a4d7c;
+            margin-bottom: 20px;
+        }
+        
+        input[type="text"] {
+            width: 350px;
+            padding: 15px 20px;
+            font-size: 1.3em;
+            font-family: 'Crimson Text', serif;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            text-align: center;
+            background: white;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+        
+        input[type="text"]:focus {
+            outline: none;
+            border-color: #1a4d7c;
+            box-shadow: 0 0 10px rgba(26, 77, 124, 0.3);
+        }
+        
+        button {
+            margin: 20px 10px;
+            padding: 15px 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2em;
+            font-weight: 700;
+            color: #fdfbf7;
+            background: #1a4d7c;
+            border: 3px solid #8b4513;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        button:hover {
+            background: #d4322c;
+            transform: translateY(-2px);
+        }
+        
+        .feedback {
+            margin: 20px 0;
+            padding: 20px;
+            border-radius: 8px;
+            font-size: 1.2em;
+            text-align: center;
+            display: none;
+        }
+        
+        .feedback.error {
+            background: #ffe6e6;
+            border: 2px solid #d4322c;
+            color: #8b0000;
+            display: block;
+        }
+        
+        .feedback.success {
+            background: #e6ffe6;
+            border: 2px solid #2d7d2d;
+            color: #0b4d0b;
+            display: block;
+        }
+        
+        .hint {
+            font-size: 1em;
+            color: #666;
+            font-style: italic;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="progress-bar">
+            <div class="progress-fill"></div>
+        </div>
+        
+        <div class="level-header">
+            <p class="level-number">LEVEL 6 OF 8</p>
+            <h1>The Landmarks Cipher</h1>
+        </div>
+        
+        <div class="puzzle-box">
+            <div class="map-icon">🗺️ 🎯 📍</div>
+            
+            <p class="story-text">
+                Jonathan Brown bursts into the room with a map of London, marked with 
+                five mysterious X's in red ink.
+            </p>
+            
+            <p class="story-text" style="font-style: italic;">
+                "Paddington's dropped clues all across the city! Each location's name begins 
+                with a special letter. Gather them in order, and they'll spell something 
+                rather important..."
+            </p>
+            
+            <div class="instruction-box">
+                🔍 Your Mission 🔍<br><br>
+                Find each London landmark using the clues.<br>
+                Write the FIRST LETTER of each location, in order.<br>
+                Together, they spell the name for whom this quest was woven.
+            </div>
+            
+            <div class="landmark-card">
+                <div class="landmark-title">📍 STATION THE FIRST: Circle Line's Secret</div>
+                <div class="landmark-clue">
+                    Between Westbourne Park and Paddington Central<br>
+                    Named for a drinking establishment of old
+                </div>
+                <div class="landmark-hint">
+                    Hint: "Circle Line station Westbourne Paddington pub"
+                </div>
+            </div>
+            
+            <div class="landmark-card">
+                <div class="landmark-title">📍 STATION THE SECOND: The Future Arrives</div>
+                <div class="landmark-clue">
+                    HS2's western terminus, Elizabeth's sister<br>
+                    Where ancient oaks once stood
+                </div>
+                <div class="landmark-hint">
+                    Hint: "HS2 station west London Paddington"
+                </div>
+            </div>
+            
+            <div class="landmark-card">
+                <div class="landmark-title">📍 HOSPITAL THE THIRD: Royal Birthplace</div>
+                <div class="landmark-clue">
+                    On Praed Street, where princes greet the world
+                </div>
+                <div class="landmark-hint">
+                    Hint: "hospital Praed Street Prince George"
+                </div>
+            </div>
+            
+            <div class="landmark-card">
+                <div class="landmark-title">📍 COLLEGE THE FOURTH: Halls of Medicine</div>
+                <div class="landmark-clue">
+                    Norfolk Place's prestigious institution
+                </div>
+                <div class="landmark-hint">
+                    Hint: "Imperial College Paddington Norfolk"
+                </div>
+            </div>
+            
+            <div class="landmark-card">
+                <div class="landmark-title">📍 ROAD THE FIFTH: The Great Northward Artery</div>
+                <div class="landmark-clue">
+                    From Marble Arch to distant lands<br>
+                    The A5's ancient Roman path
+                </div>
+                <div class="landmark-hint">
+                    Hint: "major road north Marble Arch A5"
+                </div>
+            </div>
+        </div>
+        
+        <div class="answer-section">
+            <p class="question">What name do the first letters spell?</p>
+            <input type="text" id="answer" placeholder="Enter the name..." autocomplete="off">
+            <br>
+            <button onclick="checkAnswer()">Submit Answer</button>
+            <div class="feedback" id="feedback"></div>
+            <p class="hint">Search for each landmark, take its first letter, and spell out the name in order!</p>
+        </div>
+    </div>
+    
+    <script>
+        let attempts = 0;
+        
+        function checkAnswer() {
+            const input = document.getElementById('answer').value.trim().toUpperCase();
+            const feedback = document.getElementById('feedback');
+            attempts++;
+            
+            if (input === 'ROSIE') {
+                feedback.className = 'feedback success';
+                feedback.innerHTML = `
+                    <p style="font-size: 1.5em; margin-bottom: 15px;">🎉 ROSIE! 🎉</p>
+                    <p>"Of course!" Paddington exclaims, his eyes lighting up!</p>
+                    <p style="margin: 15px 0; font-size: 1.1em;">
+                        <strong>R</strong>oyal Oak →
+                        <strong>O</strong>ld Oak Common →
+                        <strong>S</strong>t Mary's Hospital →
+                        <strong>I</strong>mperial College →
+                        <strong>E</strong>dgware Road
+                    </p>
+                    <p style="margin-top: 15px;">"This entire quest has been for Rosie all along!"</p>
+                    <p>"But wait... there are still two more challenges ahead..."</p>
+                `;
+                
+                setTimeout(() => {
+                    window.location.href = '../the-marmalade-maze/index.html';
+                }, 5000);
+            } else {
+                feedback.className = 'feedback error';
+                
+                if (attempts === 1) {
+                    feedback.innerHTML = `
+                        <p>❌ Not quite...</p>
+                        <p>"Have you found all five landmarks?" Jonathan asks.</p>
+                    `;
+                } else if (attempts === 2) {
+                    feedback.innerHTML = `
+                        <p>❌ Keep searching...</p>
+                        <p>"Remember: Royal Oak, Old Oak Common, St Mary's Hospital, Imperial College, Edgware Road," 
+                        Mrs. Bird whispers. "Take the first letter of each..."</p>
+                    `;
+                } else if (attempts === 3) {
+                    feedback.innerHTML = `
+                        <p>❌ Almost there...</p>
+                        <p>Paddington counts on his paws: "R... O... S... I... E... 
+                        It spells a name! A very special name!"</p>
+                    `;
+                } else {
+                    feedback.innerHTML = `
+                        <p>❌ One more try...</p>
+                        <p>"The answer is ROSIE!" Mr. Gruber reveals with a gentle smile. 
+                        "This quest was always meant for her!"</p>
+                    `;
+                }
+            }
+        }
+        
+        document.getElementById('answer').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                checkAnswer();
+            }
+        });
+        
+        window.onload = function() {
+            document.getElementById('answer').focus();
+        };
+    </script>
+</body>
+</html>
+

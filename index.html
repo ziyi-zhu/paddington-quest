@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paddington's Marmalade Mystery</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Crimson+Text:ital,wght@0,400;0,600;0,700;1,400&family=Playfair+Display:wght@700;900&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Crimson Text', serif;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5c4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            color: #2c1810;
+        }
+        
+        .container {
+            max-width: 800px;
+            background: #fdfbf7;
+            border: 3px solid #8b4513;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            padding: 50px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: repeating-linear-gradient(
+                90deg,
+                #d4322c 0px,
+                #d4322c 20px,
+                #fdfbf7 20px,
+                #fdfbf7 40px
+            );
+        }
+        
+        .bear-icon {
+            font-size: 80px;
+            text-align: center;
+            margin-bottom: 20px;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3em;
+            text-align: center;
+            color: #1a4d7c;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-size: 1.4em;
+            text-align: center;
+            color: #d4322c;
+            font-style: italic;
+            margin-bottom: 30px;
+        }
+        
+        .story-text {
+            font-size: 1.2em;
+            line-height: 1.8;
+            margin: 30px 0;
+            text-align: justify;
+            text-indent: 2em;
+        }
+        
+        .telegram {
+            background: #fff9e6;
+            border: 2px dashed #8b4513;
+            padding: 30px;
+            margin: 30px 0;
+            font-family: 'Courier New', monospace;
+            position: relative;
+        }
+        
+        .telegram::before {
+            content: '📮';
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            font-size: 40px;
+        }
+        
+        .begin-button {
+            display: block;
+            width: 300px;
+            margin: 40px auto;
+            padding: 20px 40px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #fdfbf7;
+            background: #1a4d7c;
+            border: 3px solid #8b4513;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .begin-button:hover {
+            background: #d4322c;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        .note {
+            font-size: 1.1em;
+            text-align: center;
+            font-style: italic;
+            color: #666;
+            margin-top: 30px;
+        }
+        
+        .marmalade-jar {
+            display: inline-block;
+            margin: 0 5px;
+            animation: wobble 2s ease-in-out infinite;
+        }
+        
+        @keyframes wobble {
+            0%, 100% { transform: rotate(0deg); }
+            25% { transform: rotate(-5deg); }
+            75% { transform: rotate(5deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="bear-icon">🧸</div>
+        <h1>Paddington's<br>Marmalade Mystery</h1>
+        <p class="subtitle">A Webquest for Rosie</p>
+        
+        <div class="telegram">
+            <p style="text-align: center; margin-bottom: 15px; font-weight: bold;">⚡ URGENT TELEGRAM ⚡</p>
+            <p style="margin: 5px 0;">FROM: 32 Windsor Gardens, London</p>
+            <p style="margin: 5px 0;">TO: Rosie</p>
+            <p style="margin: 5px 0;">DATE: November 9th, 2025</p>
+            <hr style="border: 1px dashed #8b4513; margin: 15px 0;">
+            <p style="margin: 10px 0;">DEAR ROSIE STOP</p>
+            <p style="margin: 10px 0;">DISASTER HAS STRUCK STOP</p>
+            <p style="margin: 10px 0;">AUNT LUCY'S MOST PRECIOUS RECIPE HAS GONE MISSING STOP</p>
+            <p style="margin: 10px 0;">NEED YOUR HELP URGENTLY STOP</p>
+            <p style="margin: 10px 0;">CLUES SCATTERED ACROSS LONDON STOP</p>
+            <p style="margin: 10px 0;">ONLY THE CLEVEREST SOLVER CAN RECOVER IT STOP</p>
+            <p style="margin: 10px 0; text-align: right;">PADDINGTON BEAR</p>
+        </div>
+        
+        <p class="story-text">
+            Dear Rosie, I do hope this message finds you well. I'm in rather a pickle, as Mrs. Bird would say. You see, I had a very special recipe tucked safely in my hat, but this morning when I reached for it, the paper had quite vanished! All that remains are cryptic clues left by my friends around London.
+        </p>
+        
+        <p class="story-text">
+            Mr. Gruber says the clues form a trail—each answer unlocking the next puzzle. Mrs. Bird insists only someone truly special could solve them all. The Browns believe that person is you.
+        </p>
+        
+        <p class="story-text" style="text-align: center; font-size: 1.3em; font-style: italic; margin: 40px 0;">
+            Will you help me recover what's been lost?
+        </p>
+        
+        <p style="text-align: center; margin: 30px 0;">
+            <span class="marmalade-jar">🍊</span>
+            <span class="marmalade-jar">🍊</span>
+            <span class="marmalade-jar">🍊</span>
+        </p>
+        
+        <a href="the-postmark/index.html" class="begin-button">Begin the Quest</a>
+        
+        <p class="note">
+            "Please look after this quest; for it leads to something rather special." — P.B.
+        </p>
+    </div>
+</body>
+</html>
+
