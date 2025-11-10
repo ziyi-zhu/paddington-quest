@@ -149,6 +149,56 @@
             25% { transform: rotate(-5deg); }
             75% { transform: rotate(5deg); }
         }
+        
+        .letter-content {
+            display: none;
+        }
+        
+        .letter-content.show {
+            display: block;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .open-letter-button {
+            display: block;
+            width: 350px;
+            margin: 40px auto;
+            padding: 25px 50px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6em;
+            font-weight: 700;
+            color: #fdfbf7;
+            background: #d4322c;
+            border: 3px solid #8b4513;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+        
+        .open-letter-button:hover {
+            background: #1a4d7c;
+            transform: translateY(-3px) scale(1.05);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        .envelope-icon {
+            font-size: 100px;
+            text-align: center;
+            margin: 30px 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
     </style>
 </head>
 <body>
@@ -157,6 +207,15 @@
         <h1>Paddington's<br>Marmalade Mystery</h1>
         <p class="subtitle">A Webquest for Rosie</p>
         
+        <div class="envelope-icon">📮</div>
+        
+        <p style="text-align: center; font-size: 1.3em; margin: 20px 0; color: #1a4d7c; font-style: italic;">
+            A letter has arrived from Paddington...
+        </p>
+        
+        <button class="open-letter-button" onclick="openLetter()">📜 Open the Letter</button>
+        
+        <div class="letter-content" id="letterContent">
         <div class="telegram">
             <p style="text-align: center; margin-bottom: 15px; font-weight: bold;">⚡ URGENT TELEGRAM ⚡</p>
             <p style="margin: 5px 0;">FROM: 32 Windsor Gardens, London</p>
@@ -195,7 +254,31 @@
         <p class="note">
             "Please look after this quest; for it leads to something rather special." — P.B.
         </p>
+        </div>
     </div>
+    
+    <audio id="letterAudio" preload="auto">
+        <source src="letter.mp3" type="audio/mpeg">
+    </audio>
+    
+    <script>
+        function openLetter() {
+            // Hide the open letter button
+            document.querySelector('.open-letter-button').style.display = 'none';
+            document.querySelector('.envelope-icon').style.display = 'none';
+            document.querySelector('.container > p').style.display = 'none';
+            
+            // Show the letter content
+            const letterContent = document.getElementById('letterContent');
+            letterContent.classList.add('show');
+            
+            // Play the audio
+            const audio = document.getElementById('letterAudio');
+            audio.play().catch(function(error) {
+                console.log("Audio playback failed:", error);
+            });
+        }
+    </script>
 </body>
 </html>
 
