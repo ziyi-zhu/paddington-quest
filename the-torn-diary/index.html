@@ -258,19 +258,19 @@
             </p>
             
             <p class="story-text">
-                She shows you two dates, one clear as day, the other mysteriously obscured:
+                She shows you two dates, both mysteriously obscured:
             </p>
             
             <div class="diary-page">
                 <div style="text-align: center; margin-bottom: 30px;">
-                    <div class="date-display date-clear">• • / 1 • / • • • •</div>
+                    <div class="date-display date-clear">• • / 1 • / 1 • • •</div>
                     <div class="date-label">A remarkable soul arrived</div>
                 </div>
                 
                 <hr style="border: 2px solid #8b4513; margin: 30px 0;">
                 
                 <div style="text-align: center; margin-top: 30px;">
-                    <div class="date-display date-obscured">2 • / • • / • • • 4</div>
+                    <div class="date-display date-obscured">2 • / • • / 2 • • •</div>
                     <div class="poetry">
                         Two hearts, one celebration<br>
                         When spring's blossoms danced
@@ -289,23 +289,22 @@
             </p>
             
             <div class="instruction-box">
-                📝 Mrs. Bird instructs: 📝<br><br>
-                "Add every single digit from BOTH dates together.<br>
-                The sum unlocks the next door."
+                Mrs. Bird gazes at the diary page thoughtfully...<br><br>
+                "Two moments in time, each numbered and whole.<br>
+                Break them to pieces to unlock the soul."
             </div>
             
             <p class="story-text" style="text-align: center; font-size: 1.1em; color: #666;">
-                Can you deduce the obscured anniversary and calculate the total?
+                What number opens the door?
             </p>
         </div>
         
         <div class="answer-section">
-            <p class="question">What is the sum of all digits from both dates?</p>
-            <input type="text" id="answer" placeholder="Enter the sum..." autocomplete="off">
+            <p class="question">The key to Mrs. Bird's secret?</p>
+            <input type="text" id="answer" placeholder="Enter your answer..." autocomplete="off">
             <br>
             <button onclick="checkAnswer()">Submit Answer</button>
             <div class="feedback" id="feedback"></div>
-            <p class="hint">First figure out the wedding date (spring month, 2024), then add ALL individual digits from both dates!</p>
         </div>
     </div>
     
@@ -333,31 +332,10 @@
                 }, 4500);
             } else {
                 feedback.className = 'feedback error';
-                
-                if (attempts === 1) {
-                    feedback.innerHTML = `
-                        <p>❌ Not quite...</p>
-                        <p>"Have you figured out the wedding date?" Mrs. Bird asks gently.</p>
-                    `;
-                } else if (attempts === 2) {
-                    feedback.innerHTML = `
-                        <p>❌ Still searching...</p>
-                        <p>Mr. Brown hints: "Spring's sweet month... Think of May flowers and wedding bells. 
-                        The date was late in that month, and the day adds up to 10."</p>
-                    `;
-                } else if (attempts === 3) {
-                    feedback.innerHTML = `
-                        <p>❌ Keep trying...</p>
-                        <p>"The wedding was on 28/05/2024," Paddington whispers. 
-                        "Now add each digit: 2+8+0+5+2+0+2+4 = ?"</p>
-                    `;
-                } else {
-                    feedback.innerHTML = `
-                        <p>❌ Almost there...</p>
-                        <p>Mrs. Bird explains: "First date gives 1+8+1+1+1+9+9+7 = 37. 
-                        Second date gives 2+8+0+5+2+0+2+4 = 23. Add those two sums together!"</p>
-                    `;
-                }
+                feedback.innerHTML = `
+                    <p>❌ Not quite...</p>
+                    <p>Mrs. Bird gazes at the dates thoughtfully.</p>
+                `;
             }
         }
         

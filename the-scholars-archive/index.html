@@ -299,17 +299,16 @@
             </p>
             
             <p class="story-text" style="text-align: center; font-size: 0.95em; color: #666;">
-                Mr. Gruber adjusts his spectacles: "Look for 'A Disappearing Trick' in the Books section..."
+                Mr. Gruber adjusts his spectacles: "The archive holds many tales..."
             </p>
         </div>
         
         <div class="answer-section">
-            <p class="question">What is the grumpy neighbor's surname?</p>
-            <input type="text" id="answer" placeholder="Enter surname..." autocomplete="off">
+            <p class="question">Who lurks beyond the threshold?</p>
+            <input type="text" id="answer" placeholder="Enter name..." autocomplete="off">
             <br>
             <button onclick="checkAnswer()">Submit Answer</button>
             <div class="feedback" id="feedback"></div>
-            <p class="hint">Search the Wikipedia page for "A Disappearing Trick" — it introduces the Browns' grumpy neighbor!</p>
         </div>
     </div>
     
@@ -335,31 +334,10 @@
                 }, 4000);
             } else {
                 feedback.className = 'feedback error';
-                
-                if (attempts === 1) {
-                    feedback.innerHTML = `
-                        <p>❌ Not quite...</p>
-                        <p>"Are you certain you found the right story?" Mr. Gruber asks kindly.</p>
-                    `;
-                } else if (attempts === 2) {
-                    feedback.innerHTML = `
-                        <p>❌ Keep searching...</p>
-                        <p>"Look specifically for 'A Disappearing Trick' in the Books section. 
-                        The neighbor's name starts with C..."</p>
-                    `;
-                } else if (attempts === 3) {
-                    feedback.innerHTML = `
-                        <p>❌ Almost there...</p>
-                        <p>Paddington whispers: "The grumpy neighbor shares his name with a spicy dish! 
-                        Mr. Gruber says it's Mr. C___y"</p>
-                    `;
-                } else {
-                    feedback.innerHTML = `
-                        <p>❌ One more try...</p>
-                        <p>"The answer is simply: Curry," Mrs. Bird calls from the doorway. 
-                        "Mr. Curry, the Browns' disagreeable neighbor!"</p>
-                    `;
-                }
+                feedback.innerHTML = `
+                    <p>❌ Not quite...</p>
+                    <p>"Search deeper in the archive..." Mr. Gruber suggests.</p>
+                `;
             }
         }
         

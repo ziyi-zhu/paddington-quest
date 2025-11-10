@@ -247,21 +247,20 @@
                 </div>
                 <p style="margin: 15px 0;">
                     "I know I live there, but which number was it? 
-                    The postman would know. What's my house number?"
+                    The postman would know..."
                 </p>
                 <p style="font-size: 0.9em; color: #666; margin-top: 10px;">
-                    (Numbers only, please)
+                    (Seek the numbers in the mist)
                 </p>
             </div>
         </div>
         
         <div class="answer-section">
-            <p class="question">What is Paddington's house number?</p>
+            <p class="question">Where does the bear dwell?</p>
             <input type="text" id="answer" placeholder="Enter number..." autocomplete="off">
             <br>
             <button onclick="checkAnswer()">Submit Answer</button>
             <div class="feedback" id="feedback"></div>
-            <p class="hint">Hint: Think of the famous Paddington Bear stories...</p>
         </div>
     </div>
     
@@ -286,23 +285,10 @@
                 }, 3000);
             } else {
                 feedback.className = 'feedback error';
-                
-                if (attempts === 1) {
-                    feedback.innerHTML = `
-                        <p>❌ Not quite right...</p>
-                        <p>Paddington looks puzzled. "Are you sure? Try again, please."</p>
-                    `;
-                } else if (attempts === 2) {
-                    feedback.innerHTML = `
-                        <p>❌ Still not correct...</p>
-                        <p>"Perhaps you should think about the original Paddington Bear stories by Michael Bond. Where does he live with the Brown family?"</p>
-                    `;
-                } else {
-                    feedback.innerHTML = `
-                        <p>❌ Hmm, that's not it...</p>
-                        <p>Mrs. Bird whispers: "It's a two-digit number, dear. The first digit is smaller than the second!"</p>
-                    `;
-                }
+                feedback.innerHTML = `
+                    <p>❌ Not quite...</p>
+                    <p>Paddington looks puzzled. "Try again, please."</p>
+                `;
             }
         }
         

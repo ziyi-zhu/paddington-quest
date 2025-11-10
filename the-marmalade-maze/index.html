@@ -267,12 +267,12 @@
         
         <div class="game-instructions">
             <p style="font-size: 1.2em; font-weight: 600; margin-bottom: 15px; color: #d4322c;">
-                🧸 USE ARROW KEYS TO GUIDE PADDINGTON 🧸
+                🧸 Guide the bear through golden paths 🧸
             </p>
-            <p style="margin: 10px 0;">🍊 Collect ALL 10 oranges to reveal the exit</p>
-            <p style="margin: 10px 0;">🎯 Then find the ✨ ROSIE JAR ✨</p>
+            <p style="margin: 10px 0;">Gather the fruits of your journey</p>
+            <p style="margin: 10px 0;">The treasure appears only when ready</p>
             <p style="margin: 15px 0; font-size: 0.95em; color: #666;">
-                (Or use the buttons below on mobile)
+                (Arrow keys or buttons below)
             </p>
         </div>
         
@@ -298,19 +298,18 @@
                 🎉 You found the ROSIE jar! 🎉
             </p>
             <p style="margin: 15px 0; line-height: 1.8;">
-                But wait! The jar is locked with a mathematical sequence. 
-                Mrs. Bird shows you a pattern of numbers on the label:
+                The jar's lid bears an ancient riddle—numbers that dance in harmony, 
+                each born from those before it:
             </p>
             <div class="fibonacci-sequence">
                 1, 1, 2, 3, 5, 8, 13, 21, ??
             </div>
             <div class="answer-section">
-                <p class="question">What is the next number in the sequence?</p>
+                <p class="question">What completes the pattern?</p>
                 <input type="text" id="answer" placeholder="Enter number..." autocomplete="off">
                 <br>
                 <button onclick="checkAnswer()">Submit Answer</button>
                 <div class="feedback" id="feedback"></div>
-                <p class="hint">Hint: This is the Fibonacci sequence. Add the last two numbers!</p>
             </div>
         </div>
     </div>
@@ -505,23 +504,10 @@
                 }, 4000);
             } else {
                 feedback.className = 'feedback error';
-                
-                if (attempts === 1) {
-                    feedback.innerHTML = `
-                        <p>❌ Not quite...</p>
-                        <p>"Remember, each number is the sum of the previous two!" Paddington says.</p>
-                    `;
-                } else if (attempts === 2) {
-                    feedback.innerHTML = `
-                        <p>❌ Keep trying...</p>
-                        <p>"What is 13 plus 21?" Mrs. Bird asks gently.</p>
-                    `;
-                } else {
-                    feedback.innerHTML = `
-                        <p>❌ One more try...</p>
-                        <p>"13 + 21 = 34!" Mr. Gruber calls out. "The next Fibonacci number!"</p>
-                    `;
-                }
+                feedback.innerHTML = `
+                    <p>❌ Not quite...</p>
+                    <p>"The pattern continues..." Mrs. Bird whispers.</p>
+                `;
             }
         }
         

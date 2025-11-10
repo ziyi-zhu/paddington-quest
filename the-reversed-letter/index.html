@@ -257,17 +257,16 @@
             </p>
             
             <p class="story-text" style="text-align: center; font-weight: 600; color: #d4322c;">
-                Your answer is merely a number.
+                The stars hold the answer.
             </p>
         </div>
         
         <div class="answer-section">
-            <p class="question">What number is the answer?</p>
+            <p class="question">How many lights guide the way?</p>
             <input type="text" id="answer" placeholder="Enter a number..." autocomplete="off">
             <br>
             <button onclick="checkAnswer()">Submit Answer</button>
             <div class="feedback" id="feedback"></div>
-            <p class="hint">First decode the message using the Atbash cipher, then think about what you need to count...</p>
         </div>
     </div>
     
@@ -294,31 +293,10 @@
                 }, 3500);
             } else {
                 feedback.className = 'feedback error';
-                
-                if (attempts === 1) {
-                    feedback.innerHTML = `
-                        <p>❌ Not quite right...</p>
-                        <p>Paddington looks puzzled. "Have you decoded the Atbash cipher correctly?"</p>
-                    `;
-                } else if (attempts === 2) {
-                    feedback.innerHTML = `
-                        <p>❌ Still not correct...</p>
-                        <p>Mr. Gruber suggests: "Remember, H becomes S, G becomes T, Z becomes A... 
-                        Try working through each letter carefully."</p>
-                    `;
-                } else if (attempts === 3) {
-                    feedback.innerHTML = `
-                        <p>❌ Keep trying...</p>
-                        <p>"The decoded message says: STAR URSA MINOR," Mrs. Bird whispers. 
-                        "Now you need to count something about that constellation!"</p>
-                    `;
-                } else {
-                    feedback.innerHTML = `
-                        <p>❌ One more try...</p>
-                        <p>"Ursa Minor is also called the Little Dipper," Paddington says. 
-                        "How many stars form that constellation?"</p>
-                    `;
-                }
+                feedback.innerHTML = `
+                    <p>❌ Not quite...</p>
+                    <p>"Look to the cipher..." Mr. Gruber whispers.</p>
+                `;
             }
         }
         

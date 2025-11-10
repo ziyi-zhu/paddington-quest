@@ -258,9 +258,6 @@
                     Between Westbourne Park and Paddington Central<br>
                     Named for a drinking establishment of old
                 </div>
-                <div class="landmark-hint">
-                    Hint: "Circle Line station Westbourne Paddington pub"
-                </div>
             </div>
             
             <div class="landmark-card">
@@ -269,9 +266,6 @@
                     HS2's western terminus, Elizabeth's sister<br>
                     Where ancient oaks once stood
                 </div>
-                <div class="landmark-hint">
-                    Hint: "HS2 station west London Paddington"
-                </div>
             </div>
             
             <div class="landmark-card">
@@ -279,18 +273,12 @@
                 <div class="landmark-clue">
                     On Praed Street, where princes greet the world
                 </div>
-                <div class="landmark-hint">
-                    Hint: "hospital Praed Street Prince George"
-                </div>
             </div>
             
             <div class="landmark-card">
                 <div class="landmark-title">📍 COLLEGE THE FOURTH: Halls of Medicine</div>
                 <div class="landmark-clue">
                     Norfolk Place's prestigious institution
-                </div>
-                <div class="landmark-hint">
-                    Hint: "Imperial College Paddington Norfolk"
                 </div>
             </div>
             
@@ -300,19 +288,15 @@
                     From Marble Arch to distant lands<br>
                     The A5's ancient Roman path
                 </div>
-                <div class="landmark-hint">
-                    Hint: "major road north Marble Arch A5"
-                </div>
             </div>
         </div>
         
         <div class="answer-section">
-            <p class="question">What name do the first letters spell?</p>
+            <p class="question">What word emerges from the journey?</p>
             <input type="text" id="answer" placeholder="Enter the name..." autocomplete="off">
             <br>
             <button onclick="checkAnswer()">Submit Answer</button>
             <div class="feedback" id="feedback"></div>
-            <p class="hint">Search for each landmark, take its first letter, and spell out the name in order!</p>
         </div>
     </div>
     
@@ -345,31 +329,10 @@
                 }, 5000);
             } else {
                 feedback.className = 'feedback error';
-                
-                if (attempts === 1) {
-                    feedback.innerHTML = `
-                        <p>❌ Not quite...</p>
-                        <p>"Have you found all five landmarks?" Jonathan asks.</p>
-                    `;
-                } else if (attempts === 2) {
-                    feedback.innerHTML = `
-                        <p>❌ Keep searching...</p>
-                        <p>"Remember: Royal Oak, Old Oak Common, St Mary's Hospital, Imperial College, Edgware Road," 
-                        Mrs. Bird whispers. "Take the first letter of each..."</p>
-                    `;
-                } else if (attempts === 3) {
-                    feedback.innerHTML = `
-                        <p>❌ Almost there...</p>
-                        <p>Paddington counts on his paws: "R... O... S... I... E... 
-                        It spells a name! A very special name!"</p>
-                    `;
-                } else {
-                    feedback.innerHTML = `
-                        <p>❌ One more try...</p>
-                        <p>"The answer is ROSIE!" Mr. Gruber reveals with a gentle smile. 
-                        "This quest was always meant for her!"</p>
-                    `;
-                }
+                feedback.innerHTML = `
+                    <p>❌ Not quite...</p>
+                    <p>Jonathan studies the map. "Follow the letters..."</p>
+                `;
             }
         }
         

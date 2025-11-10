@@ -262,41 +262,35 @@
                 </p>
                 <hr style="border: 1px solid #8b4513; margin: 20px 0;">
                 <p style="margin: 15px 0; font-weight: 600;">
-                    YOUR TASK: Count only vessels bearing<br>
-                    the crimson checkered seal — the true<br>
-                    mark of Paddington's preserve
+                    Some vessels bear the proper seal<br>
+                    Others are but pretenders<br>
+                    The pattern speaks of tradition
                 </p>
                 <div class="warning-box">
-                    ⚠️ Beware: Not all jars are worthy of counting<br>
-                    Only those crowned in RED GINGHAM hold secrets ⚠️
+                    ⚠️ Choose wisely which you number ⚠️
                 </div>
             </div>
             
             <p class="story-text" style="text-align: center;">
-                "It's quite simple," Mr. Gruber smiles warmly. "Find the October post 
-                showing the Paddington Store's Halloween display."
+                Mr. Gruber adjusts his spectacles. "The answers lie in autumn's final masquerade..."
             </p>
             
             <p class="story-text" style="text-align: center; font-weight: 600; font-size: 1.2em; color: #d4322c;">
-                Count ONLY the marmalade jars with red checkered lids.
+                How many bear the proper mark?
             </p>
             
             <a href="https://www.instagram.com/paddingtonbear/" target="_blank" class="instagram-link">
                 📸 Visit @paddingtonbear on Instagram
             </a>
             
-            <p class="story-text" style="text-align: center; font-size: 0.95em; color: #666;">
-                (Look for the post from October 25, 2024 — Halloween display with wizard Paddington)
-            </p>
         </div>
         
         <div class="answer-section">
-            <p class="question">How many jars with red gingham lids can you count?</p>
+            <p class="question">The number that unlocks the path forward?</p>
             <input type="text" id="answer" placeholder="Enter a number..." autocomplete="off">
             <br>
             <button onclick="checkAnswer()">Submit Answer</button>
             <div class="feedback" id="feedback"></div>
-            <p class="hint">Look carefully at the left side of the display — only count jars with the distinctive red checkered pattern!</p>
         </div>
     </div>
     
@@ -323,30 +317,10 @@
                 }, 3500);
             } else {
                 feedback.className = 'feedback error';
-                
-                if (attempts === 1) {
-                    feedback.innerHTML = `
-                        <p>❌ Not quite...</p>
-                        <p>"Look carefully — only jars with the distinctive red checkered pattern count!"</p>
-                    `;
-                } else if (attempts === 2) {
-                    feedback.innerHTML = `
-                        <p>❌ Still not correct...</p>
-                        <p>Mr. Gruber says gently: "The distinctive gingham pattern is red — like Aunt Lucy's tablecloth!"</p>
-                    `;
-                } else if (attempts === 3) {
-                    feedback.innerHTML = `
-                        <p>❌ Keep looking...</p>
-                        <p>"Try counting the jars on the left side of the display," Paddington suggests. 
-                        "Some jars might have different colored lids!"</p>
-                    `;
-                } else {
-                    feedback.innerHTML = `
-                        <p>❌ One more careful look...</p>
-                        <p>"Focus on the Halloween display from October 25th. The jars with red checkered lids 
-                        are mostly grouped together. Count very carefully!"</p>
-                    `;
-                }
+                feedback.innerHTML = `
+                    <p>❌ Not quite...</p>
+                    <p>"Count with care..." Mr. Gruber murmurs.</p>
+                `;
             }
         }
         
